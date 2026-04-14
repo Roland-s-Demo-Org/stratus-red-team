@@ -40,6 +40,14 @@ resource "aws_s3_bucket" "query_log" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_public_access_block" "query_log" {
+  bucket                  = aws_s3_bucket.query_log.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 output "route53_logger_id" {
   value = aws_route53_resolver_query_log_config.config.id
 }
