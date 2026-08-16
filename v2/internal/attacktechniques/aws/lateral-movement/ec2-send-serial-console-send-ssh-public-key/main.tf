@@ -110,6 +110,12 @@ resource "aws_instance" "instance" {
     network_interface_id = aws_network_interface.iface[count.index].id
   }
 
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
+
   tags = {
     Name = "${local.resource_prefix}-instance-${count.index}"
   }
