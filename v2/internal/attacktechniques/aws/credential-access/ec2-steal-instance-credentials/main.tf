@@ -114,6 +114,11 @@ resource "aws_instance" "instance" {
     device_index         = 0
     network_interface_id = aws_network_interface.iface.id
   }
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
 }
 
 output "instance_id" {
