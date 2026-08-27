@@ -10,5 +10,7 @@ FROM alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff45
 LABEL org.opencontainers.image.source="https://github.com/DataDog/stratus-red-team/"
 COPY --from=builder /build/bin/stratus /stratus
 RUN apk add --update git # git is needed for Terraform to download external modules at runtime
+RUN adduser -D -u 1000 appuser && chown 1000:1000 /stratus
+USER 1000
 ENTRYPOINT ["/stratus"]
 CMD ["--help"]
