@@ -2,11 +2,13 @@ package state
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/datadog/stratus-red-team/v2/internal/utils"
 	"github.com/datadog/stratus-red-team/v2/pkg/stratus"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 const StratusStateDirectoryName = ".stratus-red-team"
@@ -47,6 +49,11 @@ func (m *LocalFileSystem) WriteFile(file string, content []byte, mode os.FileMod
 }
 
 func (m *LocalFileSystem) ReadFile(file string) ([]byte, error) {
+	for _, seg := range strings.Split(filepath.ToSlash(file), "/") {
+		if seg == ".." {
+			return nil, fmt.Errorf("invalid file path")
+		}
+	}
 	return os.ReadFile(file)
 }
 
